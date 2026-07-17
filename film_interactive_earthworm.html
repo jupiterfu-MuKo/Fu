@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神奇的蚯蚓：生態小工程師互動測驗</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f9fbf7;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            height: 300px;
+            max-height: 300px;
+        }
+        .option-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-btn:not(:disabled):hover {
+            transform: scale(1.01);
+            background-color: #f0fdf4;
+        }
+        .correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+            color: #166534 !important;
+        }
+        .wrong {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div id="app" class="max-w-2xl mx-auto px-4 py-8 min-h-screen flex flex-col">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-green-700 mb-2">神奇的蚯蚓：互動測驗</h1>
+            <p class="text-slate-500 text-sm italic">根據「媽媽老師」科普影片內容編寫</p>
+        </header>
+
+        <!-- Intro View -->
+        <div id="intro-view" class="bg-white rounded-3xl shadow-sm border border-green-100 p-8 text-center space-y-6">
+            <div class="text-6xl mb-4">🪱</div>
+            <h2 class="text-xl font-bold">歡迎來到地底冒險！</h2>
+            <p class="text-slate-600 leading-relaxed">
+                這是一份專為對自然科學感興趣的小朋友們設計的測驗。我們將透過 10 個小問題，測試你對「地球小工程師——蚯蚓」的了解。
+            </p>
+            <div class="bg-green-50 p-4 rounded-xl text-left text-sm text-green-800 border border-green-100">
+                <strong>💡 使用小提示：</strong> 每題皆可點擊右上角的播放鈕聽題目朗讀喔！
+            </div>
+            <button onclick="quizManager.start()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-95">
+                開始挑戰
+            </button>
+        </div>
+
+        <!-- Quiz View (Hidden by default) -->
+        <div id="quiz-view" class="hidden space-y-6">
+            <!-- Progress -->
+            <div class="space-y-2">
+                <div class="flex justify-between text-xs font-bold text-green-600">
+                    <span id="current-question-indicator">題目載入中...</span>
+                    <span id="score-indicator">得分: 0</span>
+                </div>
+                <div class="w-full bg-slate-200 h-3 rounded-full">
+                    <div id="progress-bar" class="bg-green-500 h-full w-0 transition-all duration-500 rounded-full shadow-sm"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 id="question-text" class="text-lg md:text-xl font-bold leading-snug pr-4">載入中...</h3>
+                    <button onclick="quizManager.speakCurrent()" class="p-3 bg-green-50 text-green-600 rounded-full hover:bg-green-100 flex-shrink-0" title="語音朗讀">
+                        🔊
+                    </button>
+                </div>
+
+                <div id="options-container" class="grid gap-3">
+                    <!-- Options injected here -->
+                </div>
+
+                <!-- Feedback Section -->
+                <div id="feedback-section" class="mt-8 pt-6 border-t border-slate-100 hidden">
+                    <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
+                        <p class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-2">知識小知識</p>
+                        <p id="rationale-text" class="text-blue-900 text-sm md:text-base leading-relaxed"></p>
+                    </div>
+                    <button id="next-btn" onclick="quizManager.next()" class="mt-6 w-full bg-slate-800 text-white font-bold py-4 rounded-2xl hover:bg-black transition-all">
+                        下一題
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result View (Hidden by default) -->
+        <div id="result-view" class="hidden text-center space-y-8 py-4">
+            <h2 class="text-3xl font-black text-slate-800">測驗成績單</h2>
+            
+            <div class="chart-container">
+                <canvas id="resultChart"></canvas>
+            </div>
+
+            <div class="space-y-2">
+                <p id="final-score" class="text-5xl font-black text-green-600">0%</p>
+                <p id="result-msg" class="text-slate-500 text-lg"></p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="bg-slate-100 text-slate-700 font-bold py-4 rounded-2xl hover:bg-slate-200 transition-all">
+                    再測一次
+                </button>
+                <a href="https://www.youtube.com/watch?v=uQVFw1kz4w8" target="_blank" class="bg-green-50 text-green-700 font-bold py-4 rounded-2xl hover:bg-green-100 transition-all flex items-center justify-center">
+                    複習影片
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-auto py-8 text-center text-xs text-slate-400">
+            <p>© 科普學習系列 | 互動應用程式設計</p>
+        </footer>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                q: "蚯蚓雖然常被稱為蟲，但牠跟哪種動物完全不同？",
+                o: ["會挖洞的動物", "住在土裡的動物", "六隻腳的昆蟲", "身體軟軟的動物"],
+                a: 2,
+                r: "昆蟲通常有六隻腳和三個身體部分，而蚯蚓完全沒有腳，屬於不同的分類。"
+            },
+            {
+                q: "蚯蚓的身體內部構造是怎樣的？",
+                o: ["有很多細小的骨頭", "完全沒有骨頭，只有強壯肌肉", "是堅硬的金屬殼", "中間是空心的管子"],
+                a: 1,
+                r: "蚯蚓屬於無脊椎動物，沒有骨骼。牠們靠著強壯肌肉的收縮和伸展來前進。"
+            },
+            {
+                q: "我們看到蚯蚓身上一圈一圈的紋路，正式名稱叫什麼？",
+                o: ["輪軸", "斑點", "環節", "盔甲"],
+                a: 2,
+                r: "蚯蚓屬於環節動物門，牠們的身體由許多相似的環狀構造組成，這就叫環節。"
+            },
+            {
+                q: "蚯蚓如何讓自己在光滑的土壤中固定並前進？",
+                o: ["用膠水黏住", "利用環節上的細小毛髮", "用尾巴推動", "用嘴巴咬住"],
+                a: 1,
+                r: "蚯蚓每個環節上都有微小的毛（剛毛），可以用來抓住土壤，輔助移動。"
+            },
+            {
+                q: "像蚯蚓這種沒有硬脊椎骨的動物，科學上稱為什麼？",
+                o: ["脊椎動物", "變溫動物", "無脊椎動物", "兩棲動物"],
+                a: 2,
+                r: "這類缺乏背骨或脊椎的動物統稱為無脊椎動物，包括蚯蚓、蝸牛等。"
+            },
+            {
+                q: "目前世界上發現的蚯蚓大約有多少種？",
+                o: ["不超過 10 種", "大約 500 種", "超過 3,000 種", "超過 100 萬種"],
+                a: 2,
+                r: "科學家已經發現了超過 3,000 種不同種類的蚯蚓，生活在地球各處。"
+            },
+            {
+                q: "蚯蚓沒有鼻子，牠們是利用什麼來呼吸的？",
+                o: ["嘴巴", "皮膚", "耳朵", "尾尖"],
+                a: 1,
+                r: "蚯蚓透過皮膚吸收氧氣，這叫做「皮膚呼吸」。這也是為什麼牠們必須待在潮濕環境。"
+            },
+            {
+                q: "為了維持生命，蚯蚓的皮膚必須隨時保持什麼狀態？",
+                o: ["乾燥溫暖", "覆蓋沙子", "濕潤潮濕", "冰冷堅硬"],
+                a: 2,
+                r: "水分能幫助氧氣溶解並穿透皮膚。如果皮膚變乾，蚯蚓就會窒息死亡。"
+            },
+            {
+                q: "雨後常在人行道看到蚯蚓，主要是因為？",
+                o: ["牠們出來找水喝", "地表潮濕有利於遷徙到新家", "牠們喜歡淋雨", "出來曬乾身體"],
+                a: 1,
+                r: "雨後的環境對蚯蚓來說很安全且濕潤，牠們會趁機長距離移動，尋找更適合的居住地。"
+            },
+            {
+                q: "蚯蚓為什麼被稱讚為「地球的小工程師」？",
+                o: ["會幫植物蓋房子", "會吃光害蟲", "幫土壤翻土並提供養分", "會修築排水溝"],
+                a: 2,
+                r: "牠們鑽洞讓空氣進入土壤，並排泄出肥沃的「蚓糞」，對植物生長非常有幫助。"
+            }
+        ];
+
+        const quizManager = {
+            current: 0,
+            score: 0,
+            isAnswered: false,
+            speech: window.speechSynthesis,
+
+            start: function() {
+                document.getElementById('intro-view').classList.add('hidden');
+                document.getElementById('quiz-view').classList.remove('hidden');
+                this.render();
+            },
+
+            render: function() {
+                this.isAnswered = false;
+                const data = quizData[this.current];
+                
+                // Update UI
+                document.getElementById('current-question-indicator').innerText = `問題 ${this.current + 1} / ${quizData.length}`;
+                document.getElementById('progress-bar').style.width = `${((this.current + 1) / quizData.length) * 100}%`;
+                document.getElementById('question-text').innerText = data.q;
+                document.getElementById('feedback-section').classList.add('hidden');
+                
+                const container = document.getElementById('options-container');
+                container.innerHTML = '';
+                
+                data.o.forEach((option, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn w-full text-left p-4 rounded-2xl border-2 border-slate-200 font-medium flex justify-between items-center bg-white';
+                    btn.innerHTML = `<span>${option}</span><span class="icon hidden"></span>`;
+                    btn.onclick = () => this.check(index, btn);
+                    container.appendChild(btn);
+                });
+            },
+
+            check: function(selected, btn) {
+                if (this.isAnswered) return;
+                this.isAnswered = true;
+                this.speech.cancel(); // Stop talking on click
+
+                const correct = quizData[this.current].a;
+                const btns = document.querySelectorAll('.option-btn');
+
+                btns.forEach((b, i) => {
+                    b.disabled = true;
+                    if (i === correct) {
+                        b.classList.add('correct');
+                        b.querySelector('.icon').innerText = '✅';
+                        b.querySelector('.icon').classList.remove('hidden');
+                    } else if (i === selected) {
+                        b.classList.add('wrong');
+                        b.querySelector('.icon').innerText = '❌';
+                        b.querySelector('.icon').classList.remove('hidden');
+                    }
+                });
+
+                if (selected === correct) {
+                    this.score++;
+                    document.getElementById('score-indicator').innerText = `得分: ${this.score}`;
+                }
+
+                document.getElementById('rationale-text').innerText = quizData[this.current].r;
+                document.getElementById('feedback-section').classList.remove('hidden');
+            },
+
+            next: function() {
+                this.current++;
+                if (this.current < quizData.length) {
+                    this.render();
+                } else {
+                    this.showResults();
+                }
+            },
+
+            speakCurrent: function() {
+                if (!this.speech) return;
+                this.speech.cancel();
+                const data = quizData[this.current];
+                const msg = new SpeechSynthesisUtterance();
+                msg.text = `${data.q}。選項有：一、${data.o[0]}。二、${data.o[1]}。三、${data.o[2]}。四、${data.o[3]}。`;
+                msg.lang = 'zh-TW';
+                msg.rate = 1.0;
+                this.speech.speak(msg);
+            },
+
+            showResults: function() {
+                document.getElementById('quiz-view').classList.add('hidden');
+                document.getElementById('result-view').classList.remove('hidden');
+                
+                const percent = Math.round((this.score / quizData.length) * 100);
+                document.getElementById('final-score').innerText = `${percent}%`;
+                
+                let msg = "";
+                if (percent === 100) msg = "完美！你簡直是蚯蚓專家！";
+                else if (percent >= 70) msg = "很棒喔！你對生態很有研究。";
+                else msg = "加油！多看幾次影片，你會變更厲害！";
+                document.getElementById('result-msg').innerText = msg;
+
+                this.renderChart();
+            },
+
+            renderChart: function() {
+                const ctx = document.getElementById('resultChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['答對', '答錯'],
+                        datasets: [{
+                            data: [this.score, quizData.length - this.score],
+                            backgroundColor: ['#22c55e', '#f1f5f9'],
+                            borderWidth: 0,
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        cutout: '80%'
+                    }
+                });
+            }
+        };
+    </script>
+</body>
+</html>
