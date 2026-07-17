@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鴞鸚鵡保育奇蹟互動測驗</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-hover: #1b5e20;
+            --bg-color: #f1f8e9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --correct-color: #4caf50;
+            --wrong-color: #f44336;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif, "Microsoft JhengHei";
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+        .quiz-info {
+            background-color: #e8f5e9;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        .question-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            background-color: #fafafa;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .question-text {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #111;
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+        .btn-speak {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: background-color 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-speak:hover {
+            background-color: var(--primary-hover);
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #ffffff;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .option-btn:hover {
+            border-color: var(--primary-color);
+            background-color: #f1f8e9;
+        }
+        .option-btn.correct {
+            background-color: #e8f5e9 !important;
+            border-color: var(--correct-color) !important;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        .option-btn.wrong {
+            background-color: #ffebee !important;
+            border-color: var(--wrong-color) !important;
+            color: var(--wrong-color);
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #fff9c4;
+            border-radius: 6px;
+            font-size: 0.95em;
+            display: none;
+            border-left: 4px solid #fbc02d;
+        }
+        .score-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+        }
+        .score-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>鴞鸚鵡保育奇蹟 互動測驗</h1>
+    <div class="subtitle">根據影片內容設計（連結：<a href="https://youtu.be/PIf-5yT8q54?si=jc8L8bLitRXGaP89" target="_blank">鴞鸚鵡的31年重建奇蹟</a>）</div>
+    
+    <div class="quiz-info">
+        <strong>💡 互動提示：</strong> 點擊題目右側的 🔊 按鈕，可語音播放題目與選項。點擊選項即可即時得知答案並查看解析！
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="score-section">
+        <div class="score-title">您的測驗進度</div>
+        <div id="progress-text" style="font-size: 1.2em;">已完成：0 / 10 題</div>
+    </div>
+</div>
+
+<script>
+    // 10題選擇題資料庫
+    const quizData = [
+        {
+            question: "鴞鸚鵡除了是世界上最重的鸚鵡外，還有什麼奇特的移動方式與氣味特徵？",
+            options: {
+                A: "牠們靠雙翼滑翔，身上帶有濃郁的薄荷香",
+                B: "牠們根本不會飛、全靠兩條腿走路，且身上散發著野生蜂蜜味",
+                C: "牠們只在樹冠間跳躍，身上有淡淡的椰香",
+                D: "牠們會游泳，身上散發著類似海洋的鹹味"
+            },
+            answer: "B",
+            explanation: "鴞鸚鵡體重可達 4 公斤，根本不會飛，全靠兩條腿在地上溜達，且身上散發著野生蜂蜜般的獨特體味。"
+        },
+        {
+            question: "在面對天敵時，鴞鸚鵡演化出的極其簡單防禦機制是什麼？",
+            options: {
+                A: "迅速飛上高空躲避",
+                B: "原地點裝死，依靠綠色羽毛完美偽裝在青苔裡",
+                C: "集體發出刺耳的叫聲嚇跑敵人",
+                D: "挖地洞躲進地下"
+            },
+            answer: "B",
+            explanation: "在過去 600 年，新西蘭沒有陸地哺乳動物掠食者，天敵只有猛禽。因此鴞鸚鵡演化出「原地裝死」的防禦機制，這能幫牠們在植物中偽裝，卻在面對嗅覺捕獵的貓和老鼠時成了送上門的午餐。"
+        },
+        {
+            question: "1995 年，新西蘭政府做出歷史性決定，將全球最後幾隻鴞鸚鵡轉移到遠離大陸的荒島上？當時的數量是多少隻？",
+            options: {
+                A: "18隻",
+                B: "36隻",
+                C: "51隻",
+                D: "100隻"
+            },
+            answer: "C",
+            explanation: "1995年，全球僅剩下最後孤零零的 51 隻鴞鸚鵡，政府緊急用直升機將牠們全部撤離轉移到與世隔絕的荒島。"
+        },
+        {
+            question: "鴞鸚鵡搬到無天敵的荒島後，初期（1980至1995年間）幾乎斷子絕孫，這段期間的幕後黑手是誰？",
+            options: {
+                A: "老鼠（咬碎並吃掉鳥蛋）",
+                B: "白鼬（捕食成年鳥）",
+                C: "野貓（獵殺幼鳥）",
+                D: "猛禽（空中襲擊）"
+            },
+            answer: "A",
+            explanation: "雖然荒島沒有大型天敵，但島上的老鼠雖然咬不動成年鳥，卻會把鳥蛋咬碎吃掉，導致 15 年間僅活下來 3 隻幼仔。"
+        },
+        {
+            question: "科學家發現，鴞鸚鵡的繁衍高度依賴哪一種活了 500 年的紐西蘭特有植物？",
+            options: {
+                A: "銀蕨",
+                B: "紐西蘭陸軍松 (Rimu)",
+                C: "毛利紅木",
+                D: "海島椰子樹"
+            },
+            answer: "B",
+            explanation: "鴞鸚鵡的繁衍只聽從大自然的一個信號，即「陸軍松 (Rimu)」的結實情況，這種樹每隔 5 到 6 年才會瘋狂結果一次。"
+        },
+        {
+            question: "科學家在紐西蘭陸軍松的果實裡，發現了哪種能開啟雌性鴞鸚鵡「催產開關」的罕見植物性營養素？",
+            // AVOID bare < symbols in JS code blocks as well to prevent parser bugs.
+            options: {
+                A: "維生素 A",
+                B: "維生素 B 群",
+                C: "維生素 C",
+                D: "植物源維生素 D3"
+            },
+            answer: "D",
+            explanation: "陸軍松的果實含有極其罕見的植物源「維生素 D3」。對獨自孵蛋的母鳥來說，這是體內的催身開關，若無足夠的維生素 D3，身體就無法形成蛋殼。"
+        },
+        {
+            question: "2002 年陸軍松大豐收時，團隊給鳥媽媽瘋狂加餐，結果卻導致新生幼仔出現什麼失衡的狀況？",
+            options: {
+                A: "體型過於龐大無法破殼",
+                B: "幼仔性別比例失衡，高達 70% 是雄性",
+                C: "幼仔免疫力極度低下",
+                D: "幼仔出生後全部不會走路"
+            },
+            answer: "B",
+            explanation: "母鴞鸚鵡有演化心機：公鳥體型比母鳥大 30% 到 40%，成長需要極大能量。當鳥媽媽覺得食物氾濫（被人類過度餵食）時，身體會自動開啟優育機制，多生強壯的兒子去爭地盤。"
+        },
+        {
+            question: "為了解決上述幼仔性別比例失衡的問題，科學家採取了什麼哭笑不得的解決方案？",
+            options: {
+                A: "強制給母鳥進行「減肥」的飢餓療法",
+                B: "強制給公鳥減肥",
+                C: "人工注射激素",
+                D: "改變島上的光照時間"
+            },
+            answer: "A",
+            explanation: "科學家開始扣留口糧，讓母鳥保持孵蛋體力但「絕不長膘」。這種減肥（飢餓）療法非常有效，立刻讓幼仔性別比例回到了健康的 1:1。"
+        },
+        {
+            question: "在人工孵化策略中，為了給母鳥做心理建設，保護團隊與魔戒特效團隊「維塔工作室」合作製作了什麼？",
+            options: {
+                A: "3D列印的假鴞鸚鵡模型",
+                B: "3D列印、重量相同且內置微型揚聲器播放小鳥叫聲的假蛋",
+                C: "虛擬實境 (VR) 眼鏡",
+                D: "仿真樹洞巢穴"
+            },
+            answer: "B",
+            explanation: "團隊用 3D 列印出了重量一模一樣的假蛋。在快破殼時，假蛋會播放小鳥叫聲給鳥媽媽做心理建設，並趁機將真蛋換回母鳥身邊。"
+        },
+        {
+            question: "經過 31 年的精細高科技保育，鴞鸚鵡的總人口從 1995 年的 51 隻增加到了多少隻？",
+            options: {
+                A: "120隻",
+                B: "247隻",
+                C: "500隻",
+                D: "1000隻"
+            },
+            answer: "B",
+            explanation: "截至最近的繁殖季統計，鴞鸚鵡的總人口已經達到了 247 隻。這是一部生命拒絕低頭的史詩！"
+        }
+    ];
+
+    let answeredCount = 0;
+    const answeredTracker = new Set();
+
+    // 語音播放功能 (TTS)
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            // 先停止正在播放的語音
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-TW'; // 設定中文台灣
+            utterance.rate = 1.0;     // 語速
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert("抱歉，您的瀏覽器不支援語音合成功能。");
+        }
+    }
+
+    // 渲染題目
+    function renderQuiz() {
+        const container = document.getElementById('quiz-container');
+        quizData.forEach((data, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `q-${index}`;
+
+            // 準備要唸出的文本：題目 + 選項
+            const speechText = `第${index + 1}題：${data.question}。選項A：${data.options.A}。選項B：${data.options.B}。選項C：${data.options.C}。選項D：${data.options.D}。`;
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-text">Q${index + 1}. ${data.question}</div>
+                    <button class="btn-speak" title="語音播放" onclick="speakText(\`${speechText.replace(/"/g, '\\"')}\`)">🔊</button>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkAnswer(${index}, 'A')"><strong>A.</strong> ${data.options.A}</button>
+                    <button class="option-btn" onclick="checkAnswer(${index}, 'B')"><strong>B.</strong> ${data.options.B}</button>
+                    <button class="option-btn" onclick="checkAnswer(${index}, 'C')"><strong>C.</strong> ${data.options.C}</button>
+                    <button class="option-btn" onclick="checkAnswer(${index}, 'D')"><strong>D.</strong> ${data.options.D}</button>
+                </div>
+                <div class="explanation" id="explanation-${index}">
+                    <strong>💡 解析：</strong> ${data.explanation}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // 檢查答案
+    window.checkAnswer = function(questionIndex, selectedOption) {
+        const card = document.getElementById(`q-${questionIndex}`);
+        const buttons = card.querySelectorAll('.option-btn');
+        const correctOption = quizData[questionIndex].answer;
+
+        // 如果這題已經答過，就不重複計分
+        if (answeredTracker.has(questionIndex)) return;
+
+        buttons.forEach(btn => {
+            const optLabel = btn.querySelector('strong').innerText.replace('.', '').trim();
+            
+            if (optLabel === correctOption) {
+                btn.classList.add('correct');
+            }
+            if (optLabel === selectedOption && selectedOption !== correctOption) {
+                btn.classList.add('wrong');
+            }
+            // 答題後禁用按鈕
+            btn.disabled = true;
+            btn.style.cursor = 'default';
+        });
+
+        // 顯示解析
+        document.getElementById(`explanation-${questionIndex}`).style.display = 'block';
+
+        // 更新進度
+        answeredTracker.add(questionIndex);
+        answeredCount++;
+        document.getElementById('progress-text').innerText = `已完成：${answeredCount} / 10 題`;
+    }
+
+    // 初始化網頁
+    window.onload = function() {
+        renderQuiz();
+    };
+</script>
+
+</body>
+</html>
