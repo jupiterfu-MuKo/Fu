@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>《兒童百科: 恐龍世界：遠古的秘密探險》互動測驗</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'Inter', 'sans-serif'],
+            bubble: ['Fredoka', '"Noto Sans TC"', 'sans-serif'],
+          },
+          colors: {
+            dino: {
+              50: '#f2f9f4',
+              100: '#e1f2e6',
+              200: '#c5e5d0',
+              500: '#2e9d5e',
+              600: '#22824c',
+              700: '#1d673e',
+              800: '#1b5234',
+              900: '#17442d',
+            },
+            amberwood: {
+              400: '#f59e0b',
+              500: '#d97706',
+              600: '#b45309',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #f6f8f5;
+      background-image: radial-gradient(#d1fae5 1px, transparent 1px), radial-gradient(#fef3c7 1px, #f6f8f5 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #a7f3d0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col font-sans antialiased selection:bg-emerald-200">
+
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-emerald-800 via-dino-700 to-teal-900 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-4 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-11 h-11 bg-amber-400 text-emerald-950 rounded-2xl flex items-center justify-center font-black text-xl shadow-md transform hover:rotate-6 transition">
+          🦕
+        </div>
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200 bg-emerald-900/60 px-2 py-0.5 rounded-full inline-block">兒童百科知識小學堂</span>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight">恐龍世界：遠古的秘密探險</h1>
+        </div>
+      </div>
+
+      <!-- Quick Action: YouTube Link -->
+      <div class="flex items-center space-x-2">
+        <a href="https://www.youtube.com/watch?v=2w6gc4Lznac" target="_blank" rel="noopener noreferrer" 
+           class="inline-flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl shadow transition transform hover:scale-105 active:scale-95">
+          <i class="fa-brands fa-youtube text-base"></i>
+          <span>觀看原版影片</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-5xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
+
+    <!-- Video Embed & Intro Section -->
+    <section class="bg-white rounded-3xl p-4 sm:p-6 shadow-md border border-emerald-100/80">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- YouTube Player -->
+        <div class="lg:col-span-7">
+          <div class="relative w-full overflow-hidden rounded-2xl shadow-inner bg-slate-900 pt-[56.25%]">
+            <iframe 
+              class="absolute top-0 left-0 w-full h-full border-0 rounded-2xl"
+              src="https://www.youtube.com/embed/2w6gc4Lznac" 
+              title="兒童百科: 恐龍世界：遠古的秘密探險" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <!-- Video Description & Quiz Instructions -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+              <i class="fa-solid fa-compass text-amber-500"></i> 探險準備須知
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-800">
+              準備好穿越時空，挑戰 10 題恐龍密碼了嗎？
+            </h2>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              點擊上方影片回顧恐龍的驚奇生活！每題皆附有<strong>語音朗讀 (TTS)</strong> 與<strong>詳細解說</strong>，選好答案即可獲得即時回饋。
+            </p>
+          </div>
+
+          <!-- Feature Badges -->
+          <div class="grid grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
+            <div class="flex items-center gap-2 p-2.5 bg-emerald-50 rounded-xl border border-emerald-100">
+              <span class="text-emerald-600 text-base">🔊</span> 支援真人語音朗讀
+            </div>
+            <div class="flex items-center gap-2 p-2.5 bg-amber-50 rounded-xl border border-amber-100">
+              <span class="text-amber-500 text-base">💡</span> 即時詳細題目解析
+            </div>
+            <div class="flex items-center gap-2 p-2.5 bg-sky-50 rounded-xl border border-sky-100">
+              <span class="text-sky-500 text-base">🎯</span> 滿分挑戰 100 分
+            </div>
+            <div class="flex items-center gap-2 p-2.5 bg-purple-50 rounded-xl border border-purple-100">
+              <span class="text-purple-500 text-base">🏆</span> 獲得探險大師勳章
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating / Sticky Progress Tracker -->
+    <section class="sticky top-[68px] z-30 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-md border border-emerald-100 transition-all">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-lg shadow-sm">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">答題進度</div>
+            <div class="text-base font-extrabold text-slate-800">
+              已完成 <span id="answered-count" class="text-emerald-600 text-lg">0</span> / 10 題
+            </div>
+          </div>
+        </div>
+
+        <!-- Score & Jump controls -->
+        <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+          <div class="text-right">
+            <div class="text-xs text-slate-500 font-bold">目前得分</div>
+            <div class="text-xl font-black text-amber-500 tracking-tight">
+              <span id="current-score">0</span> <span class="text-xs text-slate-400 font-normal">分</span>
+            </div>
+          </div>
+
+          <button id="btn-reset-top" onclick="resetQuiz()" class="text-xs font-bold text-slate-600 hover:text-red-600 bg-slate-100 hover:bg-red-50 px-3 py-2 rounded-xl transition border border-slate-200 flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-rotate-left"></i> 重設測驗
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-100 rounded-full h-2.5 mt-3 overflow-hidden border border-slate-200">
+        <div id="progress-bar-fill" class="bg-gradient-to-r from-emerald-500 to-teal-500 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+      </div>
+    </section>
+
+    <!-- Quiz Question Cards Container -->
+    <div id="questions-container" class="space-y-6">
+      <!-- Generated via JavaScript -->
+    </div>
+
+    <!-- Final Result Modal / Summary Banner -->
+    <section id="result-summary-card" class="hidden bg-gradient-to-br from-emerald-900 via-dino-800 to-teal-900 rounded-3xl p-6 sm:p-10 text-white text-center shadow-2xl relative overflow-hidden">
+      <!-- Decorative Dinosaur Elements -->
+      <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl select-none pointer-events-none">🦖</div>
+      <div class="absolute -left-10 -top-10 opacity-10 text-9xl select-none pointer-events-none">🦕</div>
+      
+      <div class="relative z-10 max-w-xl mx-auto space-y-5">
+        <div id="result-badge-icon" class="text-6xl animate-bounce">🏆</div>
+        <div>
+          <span class="text-emerald-300 font-semibold tracking-wider text-xs uppercase px-3 py-1 bg-emerald-800/80 rounded-full border border-emerald-600">測驗完成結算</span>
+          <h2 id="result-title" class="text-2xl sm:text-3xl font-black mt-2">恭喜完成恐龍探險！</h2>
+          <p id="result-subtitle" class="text-slate-200 text-sm mt-1">您展現了對遠古巨獸的驚人理解力！</p>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 inline-flex flex-col sm:flex-row items-center justify-center gap-6 w-full">
+          <div>
+            <span class="text-xs text-slate-300 block">最終總分</span>
+            <span id="final-score" class="text-4xl sm:text-5xl font-black text-amber-300">0</span>
+            <span class="text-sm text-slate-300">/ 100</span>
+          </div>
+          <div class="h-10 w-[1px] bg-white/20 hidden sm:block"></div>
+          <div>
+            <span class="text-xs text-slate-300 block">獲得封號</span>
+            <span id="final-rank-title" class="text-xl sm:text-2xl font-bold text-emerald-200">恐龍探險大師</span>
+          </div>
+        </div>
+
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <button onclick="resetQuiz()" class="px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-900 font-black rounded-xl shadow-lg transform hover:-translate-y-0.5 active:translate-y-0 transition flex items-center gap-2">
+            <i class="fa-solid fa-rotate-right"></i> 再挑戰一次
+          </button>
+          <a href="https://www.youtube.com/watch?v=2w6gc4Lznac" target="_blank" class="px-5 py-3 bg-white/15 hover:bg-white/25 text-white font-bold rounded-xl border border-white/30 transition flex items-center gap-2">
+            <i class="fa-brands fa-youtube text-red-400"></i> 重溫完整影片
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-12 py-6 bg-slate-900 text-slate-400 text-xs text-center border-t border-slate-800">
+    <div class="max-w-5xl mx-auto px-4 space-y-2">
+      <p>教材來源：《兒童百科: 恐龍世界：遠古的秘密探險》 · 專為兒童自然科學教育設計</p>
+      <p>© 恐龍知識互動學堂 · 支援 Web Speech API 語音朗讀</p>
+    </div>
+  </footer>
+
+  <!-- Script for Quiz Logic and Audio TTS -->
+  <script>
+    // 10 題選擇題數據
+    const quizData = [
+      {
+        id: 1,
+        question: "根據影片，恐龍大約出現在多少年前的遠古時代？",
+        options: [
+          { key: "A", text: "約兩億年前" },
+          { key: "B", text: "約兩千萬年前" },
+          { key: "C", text: "約一萬年前" },
+          { key: "D", text: "約六億年前" }
+        ],
+        answer: "A",
+        explanation: "影片開頭清楚說明，恐龍在大約「兩億年前」的遠古時代出現在地球上，並主宰了陸地一億多年！"
+      },
+      {
+        id: 2,
+        question: "造成約 6600 萬年前許多恐龍滅絕的主要原因是什麼？",
+        options: [
+          { key: "A", text: "劇烈火山連續爆發" },
+          { key: "B", text: "巨大隕石撞擊地球" },
+          { key: "C", text: "全球大洪水" },
+          { key: "D", text: "冰河時期極度寒冷" }
+        ],
+        answer: "B",
+        explanation: "科學研究與影片皆指出，在約 6600 萬年前，一顆巨大的隕石撞擊了地球，引起巨大的氣候劇變與塵埃遮蔽陽光，導致多數恐龍滅絕。"
+      },
+      {
+        id: 3,
+        question: "影片中提到哪一種草食性恐龍的身高可以達到像一棟小樓那麼高？",
+        options: [
+          { key: "A", text: "三角龍" },
+          { key: "B", text: "雷龍" },
+          { key: "C", text: "迅猛龍" },
+          { key: "D", text: "甲龍" }
+        ],
+        answer: "B",
+        explanation: "雷龍擁有極長無比的脖子與龐大身軀，站立時可以高達一棟小樓房的高度，輕鬆吃到高大樹木頂端的樹葉！"
+      },
+      {
+        id: 4,
+        question: "關於「飛龍（翼龍）」，影片中特別強調了哪一項事實？",
+        options: [
+          { key: "A", text: "牠們是體型最大的恐龍" },
+          { key: "B", text: "牠們是草食性動物" },
+          { key: "C", text: "牠們雖然與恐龍同時代，但不是真正的恐龍" },
+          { key: "D", text: "牠們比暴龍還兇猛" }
+        ],
+        answer: "C",
+        explanation: "飛龍（翼龍）是飛行爬行動物，雖然與恐龍生活在同一個地質時代，但科學分類上牠們並不是真正的恐龍喔！"
+      },
+      {
+        id: 5,
+        question: "哪一種恐龍是「雜食性」的，既吃植物也吃肉類或昆蟲？",
+        options: [
+          { key: "A", text: "似鳥龍" },
+          { key: "B", text: "雷龍" },
+          { key: "C", text: "暴龍" },
+          { key: "D", text: "三角龍" }
+        ],
+        answer: "A",
+        explanation: "似鳥龍跑步速度極快，外型像鴕鳥，是雜食性動物，無論是果實、樹葉還是小型昆蟲、小動物牠都吃。"
+      },
+      {
+        id: 6,
+        question: "甲龍身上用來防禦掠食者並具有強大自衛能力的主要特徵是什麼？",
+        options: [
+          { key: "A", text: "鋒利的爪子與大獠牙" },
+          { key: "B", text: "堅硬的骨質護甲與尾部的骨質錘" },
+          { key: "C", text: "三個銳利的角與大頭盔" },
+          { key: "D", text: "可以變換顏色的羽毛" }
+        ],
+        answer: "B",
+        explanation: "甲龍如同活生生的裝甲車，背部覆蓋堅硬的骨質厚板，尾巴末端更有一個沉重的骨質重錘，能狠狠打擊掠食者的腿部！"
+      },
+      {
+        id: 7,
+        question: "影片中提到哪一種恐龍嘴巴形狀類似鴨子，並擁有數百顆磨損牙齒來磨碎水生植物？",
+        options: [
+          { key: "A", text: "梁龍" },
+          { key: "B", text: "迅猛龍" },
+          { key: "C", text: "鴨嘴龍" },
+          { key: "D", text: "似鳥龍" }
+        ],
+        answer: "C",
+        explanation: "鴨嘴龍的嘴部扁平如鴨嘴，嘴裡有著排列緊密、層層生長的齒系，能有效把粗糙的植物葉片磨碎消化。"
+      },
+      {
+        id: 8,
+        question: "影片中介紹的大概只有一隻雞那麼大，且具有羽毛會飛的恐龍稱為什麼？",
+        options: [
+          { key: "A", text: "微拉普托龍（迷你龍）" },
+          { key: "B", text: "始祖鳥" },
+          { key: "C", text: "暴龍" },
+          { key: "D", text: "梁龍" }
+        ],
+        answer: "A",
+        explanation: "微拉普托龍（小盜龍/迷你龍）體型嬌小如野雞，四肢都長有羽毛，是古代能進行滑翔與飛行的小型羽毛恐龍。"
+      },
+      {
+        id: 9,
+        question: "恐龍的名字通常很有意思，影片中提到「暴龍」與「梁龍」的名字分別代表什麼意思？",
+        options: [
+          { key: "A", text: "暴龍代表「暴君蜥蜴」，梁龍代表「雙梁蜥蜴」" },
+          { key: "B", text: "暴龍代表「火之蜥蜴」，梁龍代表「長頸之王」" },
+          { key: "C", text: "暴龍代表「雷霆巨獸」，梁龍代表「高山蜥蜴」" },
+          { key: "D", text: "暴龍代表「頂級獵手」，梁龍代表「森林巨人」" }
+        ],
+        answer: "A",
+        explanation: "暴龍（Tyrannosaurus Rex）古希臘文源意為「殘暴的蜥蜴之王（暴君蜥蜴）」；梁龍（Diplodocus）源自古希臘文，意為「雙梁結構的蜥蜴」，形容其尾椎雙叉骨結構。"
+      },
+      {
+        id: 10,
+        question: "現代的哪一種動物被科學家認為是恐龍的直接後代（活生生的恐龍後裔）？",
+        options: [
+          { key: "A", text: "蜥蜴" },
+          { key: "B", text: "鱷魚" },
+          { key: "C", text: "鳥類" },
+          { key: "D", text: "烏龜" }
+        ],
+        answer: "C",
+        explanation: "現代古生物學證實，鳥類由獸腳類恐龍演化而來。也就是說，每天在我們身邊飛翔的鳥兒，其實就是唯一存活至今的恐龍後代！"
+      }
+    ];
+
+    // 狀態追蹤
+    let userAnswers = {}; // { questionId: selectedKey }
+    let score = 0;
+    let currentlySpeakingId = null;
+
+    // 初始化渲染問題
+    function renderQuiz() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.id = `q-card-${q.id}`;
+        card.className = "bg-white rounded-3xl p-5 sm:p-7 shadow-md border border-emerald-100 transition duration-300";
+
+        card.innerHTML = `
+          <!-- Question Header -->
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 font-extrabold flex items-center justify-center text-sm shadow-sm">
+                Q${index + 1}
+              </span>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">選擇題 (單選)</span>
+            </div>
+
+            <!-- Voice TTS Button -->
+            <button 
+              id="tts-btn-${q.id}" 
+              onclick="speakQuestion(${q.id})" 
+              title="朗讀此題目與選項"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all active:scale-95">
+              <i class="fa-solid fa-volume-high text-emerald-600"></i>
+              <span>語音朗讀</span>
+            </button>
+          </div>
+
+          <!-- Question Stem -->
+          <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-5 leading-snug">
+            ${q.question}
+          </h3>
+
+          <!-- Options Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+            ${q.options.map(opt => `
+              <button 
+                id="opt-btn-${q.id}-${opt.key}"
+                onclick="handleSelectAnswer(${q.id}, '${opt.key}')"
+                class="group text-left p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/50 transition duration-200 flex items-center gap-3 relative focus:outline-none">
+                <span class="w-8 h-8 rounded-xl bg-slate-100 group-hover:bg-emerald-200 text-slate-700 font-bold flex items-center justify-center text-sm transition">
+                  ${opt.key}
+                </span>
+                <span class="text-sm font-semibold text-slate-700 group-hover:text-emerald-950 flex-grow">
+                  ${opt.text}
+                </span>
+                <span id="badge-icon-${q.id}-${opt.key}" class="hidden text-base"></span>
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- Feedback & Explanation Card (Initially Hidden) -->
+          <div id="explanation-${q.id}" class="hidden mt-4 p-4 rounded-2xl border transition-all text-xs sm:text-sm">
+            <div class="flex items-center gap-2 font-bold mb-1" id="feedback-status-${q.id}">
+              <!-- Correct / Incorrect message inserted dynamically -->
+            </div>
+            <p class="text-slate-700 leading-relaxed pl-6" id="explanation-text-${q.id}">
+              <strong>科普知識解析：</strong>${q.explanation}
+            </p>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      updateProgress();
+    }
+
+    // 處理點選答案
+    function handleSelectAnswer(questionId, selectedKey) {
+      if (userAnswers[questionId]) return; // 已作答過則鎖定
+
+      const question = quizData.find(q => q.id === questionId);
+      userAnswers[questionId] = selectedKey;
+
+      const isCorrect = selectedKey === question.answer;
+      if (isCorrect) {
+        score += 10;
+      }
+
+      // 更新選項按鈕樣式
+      question.options.forEach(opt => {
+        const btn = document.getElementById(`opt-btn-${questionId}-${opt.key}`);
+        const icon = document.getElementById(`badge-icon-${questionId}-${opt.key}`);
+        btn.disabled = true;
+        btn.classList.remove('hover:border-emerald-400', 'hover:bg-emerald-50/50');
+
+        if (opt.key === question.answer) {
+          // 正確選項標示綠色
+          btn.className = "text-left p-3.5 sm:p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 flex items-center gap-3 relative";
+          icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600"></i>';
+          icon.classList.remove('hidden');
+        } else if (opt.key === selectedKey && !isCorrect) {
+          // 點選了錯誤選項標示紅色
+          btn.className = "text-left p-3.5 sm:p-4 rounded-2xl border-2 border-red-500 bg-red-50 flex items-center gap-3 relative";
+          icon.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-500"></i>';
+          icon.classList.remove('hidden');
+        } else {
+          // 其他未選選項降淡
+          btn.classList.add('opacity-40');
+        }
+      });
+
+      // 顯示解析
+      const explDiv = document.getElementById(`explanation-${questionId}`);
+      const statusDiv = document.getElementById(`feedback-status-${questionId}`);
+      explDiv.classList.remove('hidden');
+
+      if (isCorrect) {
+        explDiv.className = "mt-4 p-4 rounded-2xl border border-emerald-200 bg-emerald-50/70 text-slate-800";
+        statusDiv.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-base"></i> <span class="text-emerald-700 font-extrabold text-sm sm:text-base">答對了！太厲害了！</span>';
+      } else {
+        explDiv.className = "mt-4 p-4 rounded-2xl border border-amber-200 bg-amber-50/70 text-slate-800";
+        statusDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-600 text-base"></i> <span class="text-amber-800 font-extrabold text-sm sm:text-base">答錯囉！正確答案是 (${question.answer})</span>`;
+      }
+
+      updateProgress();
+
+      // 檢查是否全部完成
+      if (Object.keys(userAnswers).length === quizData.length) {
+        showFinalResult();
+      }
+    }
+
+    // 更新計分與進度條
+    function updateProgress() {
+      const answeredCount = Object.keys(userAnswers).length;
+      document.getElementById('answered-count').innerText = answeredCount;
+      document.getElementById('current-score').innerText = score;
+
+      const percentage = (answeredCount / quizData.length) * 100;
+      document.getElementById('progress-bar-fill').style.width = `${percentage}%`;
+    }
+
+    // 語音朗讀題目與選項 (Web Speech API)
+    function speakQuestion(questionId) {
+      if (!('speechSynthesis' in window)) {
+        displayNotice("您的瀏覽器暫時不支援語音合成功能，建議使用 Chrome 或 Safari 體驗語音功能。");
+        return;
+      }
+
+      const q = quizData.find(item => item.id === questionId);
+      const btn = document.getElementById(`tts-btn-${questionId}`);
+
+      // 如果正在朗讀此題，則停止
+      if (window.speechSynthesis.speaking && currentlySpeakingId === questionId) {
+        window.speechSynthesis.cancel();
+        resetSpeakingBtnState();
+        currentlySpeakingId = null;
+        return;
+      }
+
+      // 先停止目前的任何朗讀
+      window.speechSynthesis.cancel();
+      resetSpeakingBtnState();
+
+      // 組裝語音文本
+      const optionsText = q.options.map(o => `選項 ${o.key}：${o.text}`).join('。 ');
+      const fullText = `第 ${q.id} 題。 ${q.question}。 請選擇：${optionsText}`;
+
+      const utterance = new SpeechSynthesisUtterance(fullText);
+      utterance.lang = 'zh-TW';
+      utterance.rate = 0.95; // 稍微放慢語速適合孩童理解
+      utterance.pitch = 1.05;
+
+      utterance.onstart = () => {
+        currentlySpeakingId = questionId;
+        btn.innerHTML = '<i class="fa-solid fa-stop text-red-500 animate-pulse"></i> <span class="text-red-700">停止朗讀</span>';
+        btn.classList.add('bg-red-50', 'border-red-200');
+      };
+
+      utterance.onend = () => {
+        resetSpeakingBtnState();
+        currentlySpeakingId = null;
+      };
+
+      utterance.onerror = () => {
+        resetSpeakingBtnState();
+        currentlySpeakingId = null;
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function resetSpeakingBtnState() {
+      quizData.forEach(q => {
+        const b = document.getElementById(`tts-btn-${q.id}`);
+        if (b) {
+          b.innerHTML = '<i class="fa-solid fa-volume-high text-emerald-600"></i> <span>語音朗讀</span>';
+          b.className = "inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all active:scale-95";
+        }
+      });
+    }
+
+    // 顯示結算
+    function showFinalResult() {
+      const summaryCard = document.getElementById('result-summary-card');
+      const finalScoreEl = document.getElementById('final-score');
+      const badgeIconEl = document.getElementById('result-badge-icon');
+      const rankTitleEl = document.getElementById('final-rank-title');
+      const subtitleEl = document.getElementById('result-subtitle');
+
+      finalScoreEl.innerText = score;
+
+      if (score === 100) {
+        badgeIconEl.innerText = '👑';
+        rankTitleEl.innerText = '頂級恐龍探險大師';
+        subtitleEl.innerText = '太神了！所有恐龍知識都難不倒你，是實至名歸的史前古生物王者！';
+      } else if (score >= 80) {
+        badgeIconEl.innerText = '🏆';
+        rankTitleEl.innerText = '資深恐龍研究學者';
+        subtitleEl.innerText = '表現非常優異！對恐龍世界有著非常扎實的了解！';
+      } else if (score >= 60) {
+        badgeIconEl.innerText = '🦕';
+        rankTitleEl.innerText = '恐龍探險見習生';
+        subtitleEl.innerText = '很不錯喔！再複習一下影片，下次一定能衝擊滿分！';
+      } else {
+        badgeIconEl.innerText = '🌱';
+        rankTitleEl.innerText = '遠古世界探險新手';
+        subtitleEl.innerText = '別灰心，打開上面的影片重新回味一遍，再挑戰一次吧！';
+      }
+
+      summaryCard.classList.remove('hidden');
+      summaryCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // 重設測驗
+    function resetQuiz() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      userAnswers = {};
+      score = 0;
+      currentlySpeakingId = null;
+
+      document.getElementById('result-summary-card').classList.add('hidden');
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 自訂溫和提示訊息 (避免原生 alert)
+    function displayNotice(msg) {
+      const box = document.createElement('div');
+      box.className = "fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-slate-900/90 text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 transition";
+      box.innerText = msg;
+      document.body.appendChild(box);
+      setTimeout(() => box.remove(), 3500);
+    }
+
+    // 啟動
+    window.onload = function() {
+      renderQuiz();
+    };
+  </script>
+</body>
+</html>
